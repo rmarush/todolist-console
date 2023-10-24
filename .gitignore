@@ -1,32 +1,34 @@
-# Prerequisites
-*.d
+# Відомі файли та папки, які можна виключити
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+## Всі файли, що знаходяться в папці bin та obj (вихідний код компіляції)
+bin/
+obj/
 
-# Precompiled Headers
-*.gch
-*.pch
+## Всі файли резервних копій, створених Visual Studio
+*.bak
+*.bak.*
+*~
+\#*\#
+*.vspscc
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+## Файли тимчасового зберігання, створені Visual Studio Code
+.vscode/
 
-# Fortran module files
-*.mod
-*.smod
+# Відомі файли, які можуть бути включені
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+## Конфігураційні файли Visual Studio
+.vsconfig
 
-# Executables
-*.exe
-*.out
-*.app
+## Відомі файли решітки NuGet
+packages/
+*.nupkg
+
+# Рекомендовані файли, які можуть бути включені
+
+## Збережені налаштування для Visual Studio
+*.suo
+*.user
+*.suo
+
+## Каталог компіляції Roslyn
+roslyn/
