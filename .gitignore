@@ -32,4 +32,6 @@ packages/
 
 ## Каталог компіляції Roslyn
 roslyn/
-*.vsidx
+
+# Ігнорувати папку .vs та її вміст (Visual Studio)
+.vs/
