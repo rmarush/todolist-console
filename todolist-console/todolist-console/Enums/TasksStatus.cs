@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace todolist_console.Enums
 {
-    public enum TaskStatus
+    public enum TasksStatus
     {
         ToDo = 1,
         InProgress,

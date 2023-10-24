@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using todolist_console.Models;
 using todolist_console.Enums;
+using todolist_console.Services;
 
 namespace todolist_console
 {
@@ -12,6 +14,8 @@ namespace todolist_console
         public void ShowMenu()
         {
             TaskMenu menu = new TaskMenu();
+            List<Tasks> tasks = new List<Tasks>();
+            TaskService service = new TaskService();
             bool exit = false;
             while (!exit)
             {
@@ -27,19 +31,25 @@ namespace todolist_console
                 switch (menu)
                 {
                     case TaskMenu.CreateTask:
-                        Console.WriteLine("1");
+                        Console.WriteLine("Your choice => Create Task");
+                        tasks.Add(service.CreateTask());
                         Console.ReadKey();
                         break;
                     case TaskMenu.EditTask:
-                        Console.WriteLine("2");
+                        Console.WriteLine("Your choice => Edit Task");
+                        service.CheckTasks(tasks);
+                        service.EditTask(service.FindTask(tasks));
                         Console.ReadKey();
                         break;
                     case TaskMenu.DeleteTask:
-                        Console.WriteLine("3");
+                        Console.WriteLine("Your choice => Delete Task");
+                        service.CheckTasks(tasks);
+                        tasks.Remove(service.FindTask(tasks));
+                        Console.WriteLine("Task was deleted!");
                         Console.ReadKey();
                         break;
                     case TaskMenu.CheckTasks:
-                        Console.WriteLine("4");
+                        service.CheckTasks(tasks);
                         Console.ReadKey();
                         break;
                     case TaskMenu.End:

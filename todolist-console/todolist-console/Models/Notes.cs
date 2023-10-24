@@ -4,25 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace todolist_console.Models
+namespace todolist_console.Classes
 {
-    internal class Task
+    public class Notes
     {
         private string title;
-        private TaskStatus status;
+        private string description;
         private DateTime date;
         public string Title { get { return title; } set { title = value; } }
-        public TaskStatus Status { get { return status; } set { status = value; } }
+        public string Description { get { return description; } set { description = value; } }
         public DateTime Date { get { return date; } set { date = value; } }
-        public Task(string title, TaskStatus status)
+        public Notes(string title, string description)
         {
             this.title = title;
-            this.status = status;
+            this.description = description;
             this.date = DateTime.Now;
         }
         public override string ToString()
         {
             return string.Format($"{title}\n" +
+                                 $"{description}\n" +
                                  $"{date:dd/MM/yyyy HH:mm:ss}");
         }
     }

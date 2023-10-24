@@ -2,28 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using todolist_console.Enums;
 
-namespace todolist_console.Classes
+namespace todolist_console.Models
 {
-    internal class Note
+    public class Tasks
     {
         private string title;
-        private string description;
+        private TasksStatus status;
         private DateTime date;
         public string Title { get { return title; } set { title = value; } }
-        public string Description { get { return description; } set { description = value; } }
+        public TasksStatus Status { get { return status; } set { status = value; } }
         public DateTime Date { get { return date; } set { date = value; } }
-        public Note(string title, string description)
+        public Tasks(string title, TasksStatus status)
         {
             this.title = title;
-            this.description = description;
+            this.status = status;
             this.date = DateTime.Now;
         }
         public override string ToString()
         {
             return string.Format($"{title}\n" +
-                                 $"{description}\n" +
+                                 $"{status.ToString()}\n" +
                                  $"{date:dd/MM/yyyy HH:mm:ss}");
         }
     }
