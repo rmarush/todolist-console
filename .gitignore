@@ -32,3 +32,6 @@ packages/
 
 ## Каталог компіляції Roslyn
 roslyn/
+
+# Ігнорувати папку .vs та її вміст (Visual Studio)
+.vs/
