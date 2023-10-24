@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using todolist_console.Models;
 using todolist_console.Enums;
-using System.Threading.Tasks;
 
 namespace todolist_console.Services
 {
@@ -19,7 +18,7 @@ namespace todolist_console.Services
                 Console.Write("Enter a task name => ");
                 string title = Console.ReadLine();
 
-                if (!string.IsNullOrEmpty(title) && Regex.IsMatch(title, "^[A-Za-z]+[0-9]*$"))
+                if (!string.IsNullOrEmpty(title) && Regex.IsMatch(title, @"^[\p{L}0-9]+$"))
                 {
                     newTask = new Tasks(title, TasksStatus.ToDo);
                 }
@@ -80,6 +79,11 @@ namespace todolist_console.Services
         public void CheckTasks(List<Tasks> tasks)
         {
             IEnumerable<TasksStatus> uniqueStatuses = tasks.Select(task => task.Status).Distinct().OrderBy(status => status);
+            if(uniqueStatuses == null ||  !uniqueStatuses.Any())
+            {
+                Console.WriteLine("The task list is empty!");
+                return;
+            }
             Console.WriteLine("Status         || Title                          || Date");
             Console.WriteLine("-----------------------------------------------------------------------");
             foreach (TasksStatus status in uniqueStatuses)
