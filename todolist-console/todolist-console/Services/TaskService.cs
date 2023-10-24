@@ -79,14 +79,14 @@ namespace todolist_console.Services
         }
         public void CheckTasks(List<Tasks> tasks)
         {
-            var uniqueStatuses = tasks.Select(task => task.Status).Distinct().OrderBy(status => status);
+            IEnumerable<TasksStatus> uniqueStatuses = tasks.Select(task => task.Status).Distinct().OrderBy(status => status);
             Console.WriteLine("Status         || Title                          || Date");
             Console.WriteLine("-----------------------------------------------------------------------");
-            foreach (var status in uniqueStatuses)
+            foreach (TasksStatus status in uniqueStatuses)
             {
                 Console.WriteLine(status.ToString().PadRight(15) + "||" + $"  {"".PadRight(30)}||");
-                var tasksWithStatus = tasks.Where(task => task.Status == status);
-                foreach (var task in tasksWithStatus)
+                IEnumerable<Tasks> tasksWithStatus = tasks.Where(task => task.Status == status);
+                foreach (Tasks task in tasksWithStatus)
                 {
                     Console.WriteLine("               || " + task.Title.PadRight(30) + " || " + task.Date.ToString("dd/MM/yyyy HH:mm:ss"));
                 }
@@ -95,9 +95,3 @@ namespace todolist_console.Services
         }
     }
 }
-
-/*
- * "\n1 - Create Task" +
- * "\n2 - Edit Task" +
- * "\n3 - Delete Task" +
- */
