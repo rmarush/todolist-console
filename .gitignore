@@ -32,3 +32,4 @@ packages/
 
 ## Каталог компіляції Roslyn
 roslyn/
+*.vsidx
