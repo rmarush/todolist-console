@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using todolist_console.Models;
 using todolist_console.Enums;
 using todolist_console.Services;
@@ -33,34 +32,30 @@ namespace todolist_console
                     case TaskMenu.CreateTask:
                         Console.WriteLine("Your choice => Create Task");
                         tasks.Add(service.CreateTask());
-                        Console.ReadKey();
                         break;
                     case TaskMenu.EditTask:
                         Console.WriteLine("Your choice => Edit Task");
                         service.CheckTasks(tasks);
                         service.EditTask(service.FindTask(tasks));
-                        Console.ReadKey();
                         break;
                     case TaskMenu.DeleteTask:
                         Console.WriteLine("Your choice => Delete Task");
                         service.CheckTasks(tasks);
                         tasks.Remove(service.FindTask(tasks));
                         Console.WriteLine("Task was deleted!");
-                        Console.ReadKey();
                         break;
                     case TaskMenu.CheckTasks:
                         service.CheckTasks(tasks);
-                        Console.ReadKey();
                         break;
                     case TaskMenu.End:
                         exit = true;
                         break;
                     default:
-                        Console.WriteLine("Invalid choice. Please try again.\n" +
-                                          "Press any key to continue.");
-                        Console.ReadLine();
+                        Console.WriteLine("Invalid choice. Please try again.");
                         break;
                 }
+                Console.WriteLine("Press any key to continue.");
+                Console.ReadLine();
             }
         }
     }

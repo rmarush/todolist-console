@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using todolist_console.Enums;
+using todolist_console.Models;
+using todolist_console.Services;
 
 namespace todolist_console
 {
@@ -11,8 +12,9 @@ namespace todolist_console
     {
         public void ShowMenu()
         {
-            Console.WriteLine("Notes Menu");
             NoteMenu menu = new NoteMenu();
+            Dictionary<DateTime, Notes> notes = new Dictionary<DateTime, Notes>(); 
+            NotesService service = new NotesService();
             bool exit = false;
             while (!exit)
             {
@@ -26,37 +28,42 @@ namespace todolist_console
                         "\n6 - Return to the main menu");
                 Console.Write("Input a choice: ");
                 Enum.TryParse(Console.ReadLine(), out menu);
+                Console.Clear();
                 switch (menu)
                 {
                     case NoteMenu.CreateNote:
-                        Console.WriteLine("1");
-                        Console.ReadKey();
+                        Console.WriteLine("Your choice => Create Note");
+                        Notes note = service.CreateNote();
+                        notes.Add(note.Date, note);
                         break;
                     case NoteMenu.EditNote:
-                        Console.WriteLine("2");
-                        Console.ReadKey();
+                        Console.WriteLine("Your choice => Edit Note");
+                        service.CheckNotes(notes);
+                        service.EditNote(service.FindNote(notes));
                         break;
                     case NoteMenu.DeleteNote:
-                        Console.WriteLine("3");
-                        Console.ReadKey();
+                        Console.WriteLine("Your choice => Delete Note");
+                        service.CheckNotes(notes);
+                        notes.Remove(service.DeleteNote(notes));
                         break;
                     case NoteMenu.FindNote:
-                        Console.WriteLine("4");
-                        Console.ReadKey();
+                        Console.WriteLine("Your choice => Find Note");
+                        service.CheckNotes(notes);
+                        service.CheckNote(service.FindNote(notes));
                         break;
                     case NoteMenu.CheckNotes:
-                        Console.WriteLine("5");
-                        Console.ReadKey();
+                        Console.WriteLine("Your choice => Check Notes");
+                        service.CheckNotes(notes);
                         break;
                     case NoteMenu.End:
                         exit = true;
                         break;
                     default:
-                        Console.WriteLine("Invalid choice. Please try again.\n" +
-                                          "Press any key to continue.");
-                        Console.ReadLine();
+                        Console.WriteLine("Invalid choice. Please try again.");
                         break;
                 }
+                Console.WriteLine("Press any key to continue.");
+                Console.ReadKey();
             }
         }
     }

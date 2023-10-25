@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace todolist_console.Classes
+namespace todolist_console.Models
 {
     public class Notes
     {

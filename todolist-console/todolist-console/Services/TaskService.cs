@@ -18,7 +18,7 @@ namespace todolist_console.Services
                 Console.Write("Enter a task name => ");
                 string title = Console.ReadLine();
 
-                if (!string.IsNullOrEmpty(title) && Regex.IsMatch(title, @"^[\p{L}0-9]+$"))
+                if (!string.IsNullOrEmpty(title) && Regex.IsMatch(title, @"^[\p{L}0-9\s]+$"))
                 {
                     newTask = new Tasks(title, TasksStatus.ToDo);
                 }
@@ -50,7 +50,7 @@ namespace todolist_console.Services
                         exit = true;
                         break;
                     default:
-                        Console.WriteLine();
+                        Console.WriteLine("Invalid input. Please try again");
                         break;
                 }
             }

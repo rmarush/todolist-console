@@ -13,4 +13,9 @@
     <Folder Include="Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="InputSimulatorPlus" Version="1.0.7" />
+    <PackageReference Include="TextCopy" Version="6.2.1" />
+  </ItemGroup>
+
 </Project>
