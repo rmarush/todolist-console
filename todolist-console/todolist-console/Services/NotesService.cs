@@ -52,10 +52,15 @@ namespace todolist_console.Services
         public int DeleteNote(Dictionary<int, Notes> notes)
         {
             Notes foundedNote = FindNote(notes);
-            return foundedNote.Date.GetHashCode();
+            return foundedNote != null ? foundedNote.Date.GetHashCode() : new Notes().Date.GetHashCode();
         }
         public Notes FindNote(Dictionary<int, Notes> notes)
         {
+            if (notes == null || !notes.Any())
+            {
+                Console.WriteLine("Dictionary is empty!");
+                return null;
+            }
             Notes note = null;
             while(note == null)
             {
@@ -97,7 +102,7 @@ namespace todolist_console.Services
         }
         public void CheckNotes(Dictionary<int, Notes> notes)
         {
-            if(notes.Count == 0)
+            if(notes == null || !notes.Any())
             {
                 Console.WriteLine("You have no notes!");
                 return;

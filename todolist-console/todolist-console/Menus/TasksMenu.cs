@@ -13,8 +13,8 @@ namespace todolist_console.Menus
     {
         public void ShowMenu()
         {
-            var tasks = new List<Tasks>();
             var service = new TaskService();
+            List<Tasks> tasks = JsonService.LoadTaskData();
             bool exit = false;
             while (!exit)
             {
@@ -58,6 +58,7 @@ namespace todolist_console.Menus
                 Console.WriteLine("Press any key to continue.");
                 Console.ReadLine();
             }
+            JsonService.WriteTaskData(tasks);
         }
     }
 }

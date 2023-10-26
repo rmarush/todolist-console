@@ -13,8 +13,8 @@ namespace todolist_console
     {
         public void ShowMenu()
         {
-            var notes = new Dictionary<int, Notes>(); 
             var service = new NotesService();
+            Dictionary<int, Notes> notes = JsonService.LoadNoteData();
             bool exit = false;
             while (!exit)
             {
@@ -66,6 +66,7 @@ namespace todolist_console
                 Console.WriteLine("Press any key to continue.");
                 Console.ReadKey();
             }
+            JsonService.WriteNoteData(notes);
         }
     }
 }
