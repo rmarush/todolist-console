@@ -14,7 +14,7 @@ namespace todolist_console.Menus
         public void ShowMenu()
         {
             var service = new TaskService();
-            List<Tasks> tasks = JsonService.LoadTaskData();
+            var tasks = JsonService.LoadData<List<Tasks>>("TaskData.json");
             bool exit = false;
             while (!exit)
             {
@@ -58,7 +58,7 @@ namespace todolist_console.Menus
                 Console.WriteLine("Press any key to continue.");
                 Console.ReadLine();
             }
-            JsonService.WriteTaskData(tasks);
+            JsonService.WriteData<List<Tasks>>(tasks, "TaskData.json");
         }
     }
 }

@@ -10,77 +10,38 @@ namespace todolist_console.Services
     public class JsonService
     {
         private static readonly string _DataFolderPath = @"..\..\..\Data\";
-        public static Dictionary<int, Notes> LoadNoteData()
+        public static T? LoadData<T>(string path) where T : class
         {
             try
             {
-                string json = File.ReadAllText(Path.Combine(_DataFolderPath, "NoteData.json"));
-                var notes = JsonSerializer.Deserialize<Dictionary<int, Notes>>(json);
-                return notes;
-            }
-            catch(JsonException ex)
-            {
-                Console.WriteLine($"Deserialization error NoteData.json: {ex.Message}");
-                return new Dictionary<int, Notes>();
-            }
-            catch(IOException ex)
-            {
-                Console.WriteLine($"Error reading NoteData.json: {ex.Message}");
-                return new Dictionary<int, Notes>();
-            }
-            
-        }
-        public static void WriteNoteData(Dictionary<int, Notes> notes)
-        {
-            try
-            {
-                string json = JsonSerializer.Serialize(notes);
-                File.WriteAllText(Path.Combine(_DataFolderPath, "NoteData.json"), json);
+                string json = File.ReadAllText(Path.Combine(_DataFolderPath, path));
+                return JsonSerializer.Deserialize<T>(json);
             }
             catch (JsonException ex)
             {
-                Console.WriteLine($"Deserialization error NoteData.json: {ex.Message}");
+                Console.WriteLine($"Deserialization error {path}: {ex.Message}");
+                return null;
             }
             catch (IOException ex)
             {
-                Console.WriteLine($"Error reading NoteData.json: {ex.Message}");
+                Console.WriteLine($"Error reading {path}: {ex.Message}");
+                return null;
             }
-
         }
-        public static List<Tasks> LoadTaskData()
+        public static void WriteData<T>(T value, string path) where T : class
         {
             try
             {
-                string json = File.ReadAllText(Path.Combine(_DataFolderPath, "TaskData.json"));
-                var tasks = JsonSerializer.Deserialize<List<Tasks>>(json);
-                return tasks;
+                string json = JsonSerializer.Serialize(value);
+                File.WriteAllText(Path.Combine(_DataFolderPath, path), json);
             }
             catch (JsonException ex)
             {
-                Console.WriteLine($"Deserialization error TaskData.json: {ex.Message}");
-                return new List<Tasks>();
+                Console.WriteLine($"Deserialization error {path}: {ex.Message}");
             }
             catch (IOException ex)
             {
-                Console.WriteLine($"Error reading TaskData.json: {ex.Message}");
-                return new List<Tasks>();
-            }
-
-        }
-        public static void WriteTaskData(List<Tasks> tasks)
-        {
-            try
-            {
-                string json = JsonSerializer.Serialize(tasks);
-                File.WriteAllText(Path.Combine(_DataFolderPath, "TaskData.json"), json);
-            }
-            catch (JsonException ex)
-            {
-                Console.WriteLine($"Deserialization error TaskData.json: {ex.Message}");
-            }
-            catch (IOException ex)
-            {
-                Console.WriteLine($"Error reading TaskData.json: {ex.Message}");
+                Console.WriteLine($"Error reading {path}: {ex.Message}");
             }
         }
     }
