@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using todolist_console.Models;
 using TextCopy;
 using WindowsInput;
 using WindowsInput.Native;
+using todolist_console.Models;
+using todolist_console.Utils;
 
 namespace todolist_console.Services
 {
     public class NotesService
     {
+        private readonly int _maxTitleLenght = 15;
+        private readonly int _maxDescrLenght = 35;
+        private readonly InputSimulator _inputSimulator = new InputSimulator();
+        private readonly Clipboard _clipboard = new Clipboard();
         public Notes CreateNote()
         {
             Notes newNote = null;
@@ -21,7 +26,7 @@ namespace todolist_console.Services
                 string title = Console.ReadLine();
                 Console.Write("Enter a description => ");
                 string description = Console.ReadLine();
-                if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(description) && Regex.IsMatch(title, @"^[\p{L}0-9\s]+$"))
+                if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(description) && Regex.IsMatch(title, RegexConstants.TitlePattern))
                 {
                     newNote = new Notes(title, description);
                 }
@@ -37,41 +42,19 @@ namespace todolist_console.Services
         {
             Console.Write("What will we edit Title or Decription?" +
                     "\nEnter [0/1]: ");
-            Clipboard clipboard = new Clipboard();
             int choice = Int32.Parse(Console.ReadLine());
-            switch(choice)
-            {
-                case 0:
-                    clipboard.SetText(foundedNote.Title);
-                    break;
-                case 1:
-                    clipboard.SetText(foundedNote.Description);
-                    break;
-            }
-            InputSimulator inputSimulator = new InputSimulator();
-            var pasteTask = Task.Run(() =>
-            {
-                Thread.Sleep(100);
-                inputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
-            });
+            _clipboard.SetText(choice == 0 ? foundedNote.Title : foundedNote.Description);
+            _inputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
             string newText = Console.ReadLine();
-            pasteTask.Wait();
-            if(choice == 1)
-            {
-                foundedNote.Description = newText;
-            } else
-            {
-                foundedNote.Title = newText;
-            }
+            _ = choice == 1 ? (foundedNote.Description = newText) : (foundedNote.Title = newText);
             Console.WriteLine("Note was edited!");
         }
-        public DateTime DeleteNote(Dictionary<DateTime, Notes> notes)
+        public int DeleteNote(Dictionary<int, Notes> notes)
         {
             Notes foundedNote = FindNote(notes);
-            Console.WriteLine("Note was deleted!");
-            return foundedNote.Date;
+            return foundedNote.Date.GetHashCode();
         }
-        public Notes FindNote(Dictionary<DateTime, Notes> notes)
+        public Notes FindNote(Dictionary<int, Notes> notes)
         {
             Notes note = null;
             while(note == null)
@@ -108,11 +91,11 @@ namespace todolist_console.Services
                 string title = i == 0 ? note.Title : string.Empty;
                 string description = i < chunks.Count ? chunks[i] : string.Empty;
                 string date = i == 0 ? note.Date.ToString("dd/MM/yyyy HH:mm:ss") : string.Empty;
-                Console.WriteLine($"{title.PadRight(15)} || {description.PadRight(35)}  || {date}");
+                Console.WriteLine($"{title.PadRight(_maxTitleLenght)} || {description.PadRight(_maxDescrLenght)}  || {date}");
             }
             Console.WriteLine("------------------------------------------------------------------------------");
         }
-        public void CheckNotes(Dictionary<DateTime, Notes> notes)
+        public void CheckNotes(Dictionary<int, Notes> notes)
         {
             if(notes.Count == 0)
             {
@@ -121,21 +104,21 @@ namespace todolist_console.Services
             }
             Console.WriteLine("Title           || Description                          || Date");
             Console.WriteLine("------------------------------------------------------------------------------");
-            foreach (KeyValuePair<DateTime, Notes> kvp in notes)
+            foreach (var kvp in notes)
             {
                 string title = kvp.Value.Title;
                 string descr = kvp.Value.Description;
-                if (kvp.Value.Title.Length > 15)
+                if (kvp.Value.Title.Length > _maxTitleLenght)
                 {
                     title = kvp.Value.Title.Substring(0, 12);
                     title = title + "...";
                 }
-                if (kvp.Value.Description.Length > 35)
+                if (kvp.Value.Description.Length > _maxDescrLenght)
                 {
                     descr = kvp.Value.Description.Substring(0, 32);
                     descr = descr + "...";
                 }
-                Console.WriteLine(title.PadRight(15) + " || " + descr.PadRight(35) + "  || " + kvp.Value.Date.ToString("dd/MM/yyyy HH:mm:ss"));
+                Console.WriteLine(title.PadRight(_maxTitleLenght) + " || " + descr.PadRight(_maxDescrLenght) + "  || " + kvp.Value.Date.ToString("dd/MM/yyyy HH:mm:ss"));
                 Console.WriteLine("------------------------------------------------------------------------------");
             }
         }

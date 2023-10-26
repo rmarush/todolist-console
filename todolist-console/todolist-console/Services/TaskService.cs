@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using todolist_console.Models;
 using todolist_console.Enums;
+using todolist_console.Utils;
 
 namespace todolist_console.Services
 {
@@ -18,7 +19,7 @@ namespace todolist_console.Services
                 Console.Write("Enter a task name => ");
                 string title = Console.ReadLine();
 
-                if (!string.IsNullOrEmpty(title) && Regex.IsMatch(title, @"^[\p{L}0-9\s]+$"))
+                if (!string.IsNullOrEmpty(title) && Regex.IsMatch(title, RegexConstants.TitlePattern))
                 {
                     newTask = new Tasks(title, TasksStatus.ToDo);
                 }
@@ -32,7 +33,6 @@ namespace todolist_console.Services
         }
         public void EditTask(Tasks task)
         {
-            TasksStatus status = new TasksStatus();
             bool exit = false;
             while(!exit)
             {
@@ -41,12 +41,13 @@ namespace todolist_console.Services
                       "\n2 - In progress" +
                       "\n3 - Done");
                 Console.Write("Input a choice: ");
-                Enum.TryParse(Console.ReadLine(), out status);
+                Enum.TryParse(Console.ReadLine(), out TasksStatus status);
                 switch(status)
                 {
                     case TasksStatus.ToDo:
                     case TasksStatus.InProgress:
                     case TasksStatus.Done:
+                        task.Status = status;
                         exit = true;
                         break;
                     default:
@@ -54,27 +55,14 @@ namespace todolist_console.Services
                         break;
                 }
             }
-            task.Status = status;
             Console.WriteLine("Status was changed!");
         }
         public Tasks FindTask(List<Tasks> tasks)
         {
-            Tasks task = null;
-            while (task == null)
-            {
-                Console.Write("Enter a task name for find => ");
-                string foundedTitle = Console.ReadLine();
-                Tasks foundedTask = tasks.FirstOrDefault(t => t.Title == foundedTitle);
-                if (foundedTask != null)
-                {
-                    task = foundedTask;
-                }
-                else
-                {
-                    Console.WriteLine("Task not found. Please try again.");
-                }
-            }
-            return task;
+            Console.Write("Enter a task name for find => ");
+            string foundedTitle = Console.ReadLine();
+            var task = tasks.FirstOrDefault(t => t.Title == foundedTitle);    
+            return task ?? new Tasks();
         }
         public void CheckTasks(List<Tasks> tasks)
         {
@@ -86,11 +74,11 @@ namespace todolist_console.Services
             }
             Console.WriteLine("Status         || Title                          || Date");
             Console.WriteLine("-----------------------------------------------------------------------");
-            foreach (TasksStatus status in uniqueStatuses)
+            foreach (var status in uniqueStatuses)
             {
                 Console.WriteLine(status.ToString().PadRight(15) + "||" + $"  {"".PadRight(30)}||");
-                IEnumerable<Tasks> tasksWithStatus = tasks.Where(task => task.Status == status);
-                foreach (Tasks task in tasksWithStatus)
+                var tasksWithStatus = tasks.Where(task => task.Status == status);
+                foreach (var task in tasksWithStatus)
                 {
                     Console.WriteLine("               || " + task.Title.PadRight(30) + " || " + task.Date.ToString("dd/MM/yyyy HH:mm:ss"));
                 }

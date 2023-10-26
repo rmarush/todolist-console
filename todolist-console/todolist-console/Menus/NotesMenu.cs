@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using todolist_console.Enums;
+using todolist_console.Menus.Interfaces;
 using todolist_console.Models;
 using todolist_console.Services;
 
 namespace todolist_console
 {
-    internal class NotesMenu
+    internal class NotesMenu : IMenu
     {
         public void ShowMenu()
         {
-            NoteMenu menu = new NoteMenu();
-            Dictionary<DateTime, Notes> notes = new Dictionary<DateTime, Notes>(); 
-            NotesService service = new NotesService();
+            var notes = new Dictionary<int, Notes>(); 
+            var service = new NotesService();
             bool exit = false;
             while (!exit)
             {
@@ -27,14 +27,14 @@ namespace todolist_console
                         "\n5 - Check Notes" +
                         "\n6 - Return to the main menu");
                 Console.Write("Input a choice: ");
-                Enum.TryParse(Console.ReadLine(), out menu);
+                Enum.TryParse(Console.ReadLine(), out NoteMenu menu);
                 Console.Clear();
                 switch (menu)
                 {
                     case NoteMenu.CreateNote:
                         Console.WriteLine("Your choice => Create Note");
                         Notes note = service.CreateNote();
-                        notes.Add(note.Date, note);
+                        notes.Add(note.Date.GetHashCode(), note);
                         break;
                     case NoteMenu.EditNote:
                         Console.WriteLine("Your choice => Edit Note");
@@ -45,6 +45,7 @@ namespace todolist_console
                         Console.WriteLine("Your choice => Delete Note");
                         service.CheckNotes(notes);
                         notes.Remove(service.DeleteNote(notes));
+                        Console.WriteLine("Note was deleted!");
                         break;
                     case NoteMenu.FindNote:
                         Console.WriteLine("Your choice => Find Note");

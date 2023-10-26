@@ -1,5 +1,5 @@
-﻿using todolist_console;
-using todolist_console.Enums;
+﻿using todolist_console.Enums;
+using todolist_console.Menus;
 
 namespace todolist_console
 {
@@ -7,7 +7,6 @@ namespace todolist_console
     {
         static void Main(string[] args)
         {
-            Menu menu = new Menu();
             bool exit = false;
             while(!exit)
             {
@@ -17,7 +16,7 @@ namespace todolist_console
                         "\n2 - Open Notes menu" +
                         "\n3 - End of the program");
                 Console.Write("Input a choice: ");
-                Enum.TryParse(Console.ReadLine(), out menu);
+                Enum.TryParse(Console.ReadLine(), out Menu menu);
                 switch (menu)
                 {
                     case Menu.OpenTasksMenu:

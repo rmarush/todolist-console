@@ -5,16 +5,16 @@ using System.Text;
 using todolist_console.Models;
 using todolist_console.Enums;
 using todolist_console.Services;
+using todolist_console.Menus.Interfaces;
 
-namespace todolist_console
+namespace todolist_console.Menus
 {
-    internal class TasksMenu
+    internal class TasksMenu : IMenu
     {
         public void ShowMenu()
         {
-            TaskMenu menu = new TaskMenu();
-            List<Tasks> tasks = new List<Tasks>();
-            TaskService service = new TaskService();
+            var tasks = new List<Tasks>();
+            var service = new TaskService();
             bool exit = false;
             while (!exit)
             {
@@ -26,7 +26,8 @@ namespace todolist_console
                         "\n4 - Check Tasks" +
                         "\n5 - Return to the main menu");
                 Console.Write("Input a choice: ");
-                Enum.TryParse(Console.ReadLine(), out menu);
+                Enum.TryParse(Console.ReadLine(), out TaskMenu menu);
+                Console.Clear();
                 switch (menu)
                 {
                     case TaskMenu.CreateTask:
