@@ -9,7 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="7.0.0" />
     <PackageReference Include="InputSimulatorPlus" Version="1.0.7" />
+    <PackageReference Include="MailKit" Version="4.2.0" />
     <PackageReference Include="TextCopy" Version="6.2.1" />
   </ItemGroup>
 

@@ -6,6 +6,7 @@ using todolist_console.Models;
 using todolist_console.Enums;
 using todolist_console.Services;
 using todolist_console.Menus.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace todolist_console.Menus
 {
@@ -24,7 +25,8 @@ namespace todolist_console.Menus
                         "\n2 - Edit Task" +
                         "\n3 - Delete Task" +
                         "\n4 - Check Tasks" +
-                        "\n5 - Return to the main menu");
+                        "\n5 - Send to Mail" +
+                        "\n6 - Return to the main menu");
                 Console.Write("Input a choice: ");
                 Enum.TryParse(Console.ReadLine(), out TaskMenu menu);
                 Console.Clear();
@@ -48,6 +50,9 @@ namespace todolist_console.Menus
                     case TaskMenu.CheckTasks:
                         service.CheckTasks(tasks);
                         break;
+                    case TaskMenu.EmailSend:
+                        service.EmailSend(tasks);
+                        break;
                     case TaskMenu.End:
                         exit = true;
                         break;
@@ -59,6 +64,7 @@ namespace todolist_console.Menus
                 Console.ReadLine();
             }
             JsonService.WriteData<List<Tasks>>(tasks, "TaskData.json");
+
         }
     }
 }

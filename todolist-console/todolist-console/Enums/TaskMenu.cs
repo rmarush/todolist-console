@@ -12,6 +12,7 @@ namespace todolist_console.Enums
         EditTask,
         DeleteTask,
         CheckTasks,
+        EmailSend,
         End
     }
 }
