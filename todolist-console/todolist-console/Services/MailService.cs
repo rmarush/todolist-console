@@ -38,17 +38,25 @@ namespace todolist_console.Services
                             background-color: #284359;
                             padding: 20px;
                             font-family: 'Montserrat', sans-serif;
+                            background: radial-gradient(at 18% 99%, rgb(223, 229, 113) 0px, transparent 50%) 
+                            repeat scroll 0% 0%, radial-gradient(at 97% 8%, rgb(118, 249, 173) 0px, transparent 50%) 
+                            repeat scroll 0% 0%, radial-gradient(at 79% 82%, rgb(233, 109, 131) 0px, transparent 50%) 
+                            repeat scroll 0% 0%, radial-gradient(at 96% 10%, rgb(222, 81, 251) 0px, transparent 50%) 
+                            repeat scroll 0% 0%, radial-gradient(at 42% 20%, rgb(116, 240, 251) 0px, transparent 50%) 
+                            repeat scroll 0% 0%, radial-gradient(at 4% 49%, rgb(203, 88, 218) 0px, transparent 50%) 
+                            repeat scroll 0% 0%, rgba(0, 0, 0, 0) radial-gradient(at 57% 33%, rgb(218, 83, 228) 0px, #a299ff 50%) 
+                            repeat scroll 0% 0%;
                         }}
 
                         h1 {{
-                            color: #F0F5FE;
+                            color: #FFF;
                             font-family: 'Montserrat Bold', sans-serif;
                             font-size: 24px;
                             margin-bottom: 10px;
                         }}
 
                         p {{
-                            color: #F0F5FE;
+                            color: #FFF;
                             font-size: 16px;
                         }}
                     </style>
@@ -86,10 +94,8 @@ namespace todolist_console.Services
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }
-
             attachment.Content.Stream.Dispose();
             File.Delete(filePath);
         }
-
     }
 }
