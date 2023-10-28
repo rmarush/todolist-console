@@ -24,6 +24,7 @@ packages/
 *.nupkg
 
 # Рекомендовані файли, які можуть бути включені
+KeyData.json
 
 ## Збережені налаштування для Visual Studio
 *.suo
@@ -35,3 +36,4 @@ roslyn/
 
 # Ігнорувати папку .vs та її вміст (Visual Studio)
 .vs/
+

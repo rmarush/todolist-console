@@ -8,6 +8,7 @@ using WindowsInput;
 using WindowsInput.Native;
 using todolist_console.Models;
 using todolist_console.Utils;
+using System.Data.SqlTypes;
 
 namespace todolist_console.Services
 {
@@ -56,30 +57,16 @@ namespace todolist_console.Services
         }
         public Notes FindNote(Dictionary<int, Notes> notes)
         {
-            if (notes == null || !notes.Any())
-            {
-                Console.WriteLine("Dictionary is empty!");
-                return null;
-            }
-            Notes note = null;
-            while(note == null)
-            {
-                Console.Write("Enter a note name for find => ");
-                string foundedTitle = Console.ReadLine();
-                Notes foundedNote = notes.Values.FirstOrDefault(t => t.Title == foundedTitle);
-                if (foundedNote != null)
-                {
-                    note = foundedNote;
-                }
-                else
-                {
-                    Console.WriteLine("Task not found. Please try again.");
-                }
-            }
-            return note;
+            Notes foundNote = null;
+            return foundNote;
         }
         public void CheckNote(Notes note)
         {
+            if (note == null)
+            {
+                Console.WriteLine("No note found matching the substring!");
+                return;
+            }
             int chunkSize = 35;
             List<string> chunks = new List<string>();
             for (int i = 0; i < note.Description.Length; i += chunkSize)

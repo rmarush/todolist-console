@@ -9,6 +9,8 @@ using MailKit.Security;
 using MimeKit;
 using MailKit.Net.Smtp;
 using System.IO;
+using System.Text.Json;
+using todolist_console.Models;
 
 namespace todolist_console.Services
 {
@@ -16,11 +18,9 @@ namespace todolist_console.Services
     {
         public static async Task SendMessage(string reciver, string filePath)
         {
-            const string Mail = "rmarushkevych@gmail.com";
-            const string Code = "qfiembgstzbvhumb";
-
+            var kvp = JsonService.LoadData<MailKey>("KeyData.json");
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("To-Do-List", Mail));
+            message.From.Add(new MailboxAddress("To-Do-List", kvp.Key));
             message.To.Add(new MailboxAddress("User", reciver));
             message.Subject = "To-Do-List";
 
@@ -90,11 +90,11 @@ namespace todolist_console.Services
             using (var client = new MailKit.Net.Smtp.SmtpClient())
             {
                 await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                await client.AuthenticateAsync(Mail, Code);
+                await client.AuthenticateAsync(kvp.Key, kvp.Value);
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }
-            attachment.Content.Stream.Dispose();
+            await attachment.Content.Stream.DisposeAsync();
             File.Delete(filePath);
         }
     }

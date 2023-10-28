@@ -1,6 +1,8 @@
 ﻿using todolist_console.Enums;
 using todolist_console.Menus;
+using todolist_console.Models;
 using todolist_console.Services;
+using todolist_console.Utils;
 
 namespace todolist_console
 {
@@ -9,7 +11,7 @@ namespace todolist_console
         static void Main(string[] args)
         {
             bool exit = false;
-            while(!exit)
+            while (!exit)
             {
                 Console.Clear();
                 Console.WriteLine("Main menu:" +

@@ -88,13 +88,13 @@ namespace todolist_console.Services
         }
         public async Task EmailSend(List<Tasks> tasks)
         {
-            string filePath = "Excel-To-Do-List.xlsx";
+            var filePath = "Excel-To-Do-List.xlsx";
             Console.WriteLine("Input your email: ");
-            string email = Console.ReadLine();
+            var email = Console.ReadLine();
             if (!string.IsNullOrEmpty(email) && Regex.IsMatch(email, RegexConstants.EmailPattern))
             {
                 await ExcelService.CreateExcelTable(tasks, filePath);
-                MailService.SendMessage(email.Trim(), filePath);
+                await MailService.SendMessage(email.Trim(), filePath);
                 Console.WriteLine("Message is delivered! Check your email.");
             }
             else
@@ -102,6 +102,7 @@ namespace todolist_console.Services
                 Console.WriteLine("Invalid input. Please try again.");
                 return;
             }
+
         }
     }
 }

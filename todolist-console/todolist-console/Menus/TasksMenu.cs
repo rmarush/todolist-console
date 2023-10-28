@@ -19,7 +19,6 @@ namespace todolist_console.Menus
             bool exit = false;
             while (!exit)
             {
-                Console.Clear();
                 Console.WriteLine("Tasks menu:" +
                         "\n1 - Create Task" +
                         "\n2 - Edit Task" +

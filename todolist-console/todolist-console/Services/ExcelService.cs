@@ -16,42 +16,41 @@ namespace todolist_console.Services
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            using var package = new ExcelPackage(new FileInfo(filePath));
+            var worksheet = package.Workbook.Worksheets.Add("To-Do-List");
+            var rowNumber = 1;
+            var columnStatus = "A";
+            var columnName = "B";
+            IEnumerable<TasksStatus> uniqueStatuses = tasks.Select(task => task.Status).Distinct().OrderBy(status => status);
+            if (uniqueStatuses == null || !uniqueStatuses.Any())
             {
-                var worksheet = package.Workbook.Worksheets.Add("To-Do-List");
-                int rowNumber = 1;
-                string columnStatus = "A";
-                string columnName = "B";
-                IEnumerable<TasksStatus> uniqueStatuses = tasks.Select(task => task.Status).Distinct().OrderBy(status => status);
-                if (uniqueStatuses == null || !uniqueStatuses.Any())
+                worksheet.Cells[columnStatus + rowNumber.ToString()].Value = "You have no task!";
+            }
+            else
+            {
+                foreach (var status in uniqueStatuses)
                 {
-                    worksheet.Cells[columnStatus + rowNumber.ToString()].Value = "You have no task!";
-                }
-                else
-                {
-                    foreach (var status in uniqueStatuses)
+                    worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()].Merge = true;
+                    SetStyles(worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()]);
+                    var statusCell = worksheet.Cells[columnStatus + rowNumber.ToString()];
+                    statusCell.Value = status;
+                    statusCell.Style.Font.Bold = true;
+                    statusCell.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    statusCell.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Aqua);
+                    rowNumber++;
+                    var tasksWithStatus = tasks.Where(task => task.Status == status);
+                    foreach (var task in tasksWithStatus)
                     {
                         worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()].Merge = true;
                         SetStyles(worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()]);
-                        var statusCell = worksheet.Cells[columnStatus + rowNumber.ToString()];
-                        statusCell.Value = status;
-                        statusCell.Style.Font.Bold = true;
-                        statusCell.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        statusCell.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Aqua);
-                        rowNumber++;
-                        var tasksWithStatus = tasks.Where(task => task.Status == status);
-                        foreach (var task in tasksWithStatus)
-                        {
-                            worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()].Merge = true;
-                            SetStyles(worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()]);
-                            var taskName = worksheet.Cells[columnStatus + (rowNumber++).ToString()];
-                            taskName.Value = task.Title;
-                        }
+                        var taskName = worksheet.Cells[columnStatus + (rowNumber++).ToString()];
+                        taskName.Value = task.Title;
                     }
                 }
-                await package.SaveAsync();
             }
+            await package.SaveAsync();
         }
+
         public static void SetStyles(ExcelRange? cell)
         {
             cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
