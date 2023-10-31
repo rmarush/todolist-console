@@ -18,7 +18,7 @@ namespace todolist_console.Services
             while (newTask == null)
             {
                 Console.Write("Enter a task name => ");
-                string title = Console.ReadLine();
+                var title = Console.ReadLine();
 
                 if (!string.IsNullOrEmpty(title) && Regex.IsMatch(title, RegexConstants.TitlePattern))
                 {
@@ -34,7 +34,7 @@ namespace todolist_console.Services
         }
         public void EditTask(Tasks task)
         {
-            bool exit = false;
+            var exit = false;
             while(!exit)
             {
                 Console.WriteLine("Tasks status:" +
@@ -61,7 +61,7 @@ namespace todolist_console.Services
         public Tasks FindTask(List<Tasks> tasks)
         {
             Console.Write("Enter a task name for find => ");
-            string foundedTitle = Console.ReadLine();
+            var foundedTitle = Console.ReadLine();
             var task = tasks.FirstOrDefault(t => t.Title == foundedTitle);    
             return task ?? new Tasks();
         }

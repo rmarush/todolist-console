@@ -16,9 +16,10 @@ namespace todolist_console.Menus
         {
             var service = new TaskService();
             var tasks = JsonService.LoadData<List<Tasks>>("TaskData.json");
-            bool exit = false;
+            var exit = false;
             while (!exit)
             {
+                Console.Clear();
                 Console.WriteLine("Tasks menu:" +
                         "\n1 - Create Task" +
                         "\n2 - Edit Task" +

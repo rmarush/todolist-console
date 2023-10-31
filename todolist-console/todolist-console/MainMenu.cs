@@ -1,5 +1,6 @@
 ﻿using todolist_console.Enums;
 using todolist_console.Menus;
+using todolist_console.Menus.Interfaces;
 using todolist_console.Models;
 using todolist_console.Services;
 using todolist_console.Utils;
@@ -10,7 +11,8 @@ namespace todolist_console
     {
         static void Main(string[] args)
         {
-            bool exit = false;
+            IMenu newMenu = null;
+            var exit = false;
             while (!exit)
             {
                 Console.Clear();
@@ -23,22 +25,24 @@ namespace todolist_console
                 switch (menu)
                 {
                     case Menu.OpenTasksMenu:
-                        TasksMenu tasksMenu = new TasksMenu();
-                        tasksMenu.ShowMenu();
+                        newMenu = new TasksMenu();
                         break;
                     case Menu.OpenNotesMenu:
-                        NotesMenu notesMenu = new NotesMenu();
-                        notesMenu.ShowMenu();
+                        newMenu = new NotesMenu();
                         break;
                     case Menu.End:
+                        newMenu = null;
                         exit = true;
                         break;
                     default:
+                        newMenu = null;
                         Console.WriteLine("Invalid choice. Please try again.\n" +
                                           "Press any key to continue.");
                         Console.ReadLine();
                         break;
                 }
+                if(newMenu != null)
+                    newMenu.ShowMenu();
             }
         }
     }

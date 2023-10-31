@@ -9,6 +9,8 @@ using WindowsInput.Native;
 using todolist_console.Models;
 using todolist_console.Utils;
 using System.Data.SqlTypes;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
+using System.Collections;
 
 namespace todolist_console.Services
 {
@@ -24,9 +26,9 @@ namespace todolist_console.Services
             while(newNote == null)
             {
                 Console.Write("Enter a note name => ");
-                string title = Console.ReadLine();
+                var title = Console.ReadLine();
                 Console.Write("Enter a description => ");
-                string description = Console.ReadLine();
+                var description = Console.ReadLine();
                 if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(description) && Regex.IsMatch(title, RegexConstants.TitlePattern))
                 {
                     newNote = new Notes(title, description);
@@ -41,24 +43,64 @@ namespace todolist_console.Services
         }
         public void EditNote(Notes foundedNote)
         {
+            if (foundedNote == null || !ReviewNote(foundedNote))
+            {
+                Console.WriteLine("Editing is canceling");
+                return;
+            }
             Console.Write("What will we edit Title or Decription?" +
                     "\nEnter [0/1]: ");
-            int choice = Int32.Parse(Console.ReadLine());
+            var choice = Int32.Parse(Console.ReadLine());
             _clipboard.SetText(choice == 0 ? foundedNote.Title : foundedNote.Description);
             _inputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
-            string newText = Console.ReadLine();
+            var newText = Console.ReadLine();
             _ = choice == 1 ? (foundedNote.Description = newText) : (foundedNote.Title = newText);
             Console.WriteLine("Note was edited!");
         }
         public int DeleteNote(Dictionary<int, Notes> notes)
         {
-            Notes foundedNote = FindNote(notes);
-            return foundedNote != null ? foundedNote.Date.GetHashCode() : new Notes().Date.GetHashCode();
+            var foundedNote = FindNote(notes);
+            return ReviewNote(foundedNote) ? foundedNote.Date.GetHashCode() : new Notes().Date.GetHashCode();
+        }
+
+        public bool ReviewNote(Notes note)
+        {
+            if (note == null)
+            {
+                Console.WriteLine("Note doesn't found");
+                return false;
+            }
+            Console.WriteLine("Founded Note: ");
+            CheckNote(note);
+            Console.Write("You want to work with this Note [Yes/No]?" +
+                          "\nEnter [0/1]: ");
+            return Int32.Parse(Console.ReadLine()) == 0 ? true : false;
         }
         public Notes FindNote(Dictionary<int, Notes> notes)
         {
-            Notes foundNote = null;
-            return foundNote;
+            Console.WriteLine("Input a pattern: ");
+            var query = Console.ReadLine();
+            if (notes == null || !notes.Any() || string.IsNullOrEmpty(query))
+            {
+                Console.WriteLine("Dictionary or patter is empty");
+                return null;
+            }
+            Notes bestMatchingNote = null;
+            var bestDistance = int.MaxValue; 
+            var queryLength = query.Length;
+
+            foreach (var note in notes)
+            {
+                var distance = FuzzySearch.CalculateLevenshteinDistance(query, note.Value.Title);
+                if (distance < bestDistance || (distance == bestDistance && note.Value.Title.Length < queryLength))
+                {
+                    bestMatchingNote = note.Value;
+                    bestDistance = distance;
+                }
+            }
+
+            return bestMatchingNote;
+
         }
         public void CheckNote(Notes note)
         {
@@ -67,22 +109,22 @@ namespace todolist_console.Services
                 Console.WriteLine("No note found matching the substring!");
                 return;
             }
-            int chunkSize = 35;
+            var chunkSize = 35;
             List<string> chunks = new List<string>();
             for (int i = 0; i < note.Description.Length; i += chunkSize)
             {
-                int length = Math.Min(chunkSize, note.Description.Length - i);
-                string chunk = note.Description.Substring(i, length);
+                var length = Math.Min(chunkSize, note.Description.Length - i);
+                var chunk = note.Description.Substring(i, length);
                 chunks.Add(chunk);
             }
             Console.WriteLine("Title           || Description                          || Date");
             Console.WriteLine("------------------------------------------------------------------------------");
-            int maxChunks = chunks.Count;
+            var maxChunks = chunks.Count;
             for (int i = 0; i < maxChunks; i++)
             {
-                string title = i == 0 ? note.Title : string.Empty;
-                string description = i < chunks.Count ? chunks[i] : string.Empty;
-                string date = i == 0 ? note.Date.ToString("dd/MM/yyyy HH:mm:ss") : string.Empty;
+                var title = i == 0 ? note.Title : string.Empty;
+                var description = i < chunks.Count ? chunks[i] : string.Empty;
+                var date = i == 0 ? note.Date.ToString("dd/MM/yyyy HH:mm:ss") : string.Empty;
                 Console.WriteLine($"{title.PadRight(_maxTitleLenght)} || {description.PadRight(_maxDescrLenght)}  || {date}");
             }
             Console.WriteLine("------------------------------------------------------------------------------");
@@ -96,10 +138,10 @@ namespace todolist_console.Services
             }
             Console.WriteLine("Title           || Description                          || Date");
             Console.WriteLine("------------------------------------------------------------------------------");
-            foreach (var kvp in notes)
+            foreach (var kvp in notes.OrderBy(n => n.Value.Date))
             {
-                string title = kvp.Value.Title;
-                string descr = kvp.Value.Description;
+                var title = kvp.Value.Title;
+                var descr = kvp.Value.Description;
                 if (kvp.Value.Title.Length > _maxTitleLenght)
                 {
                     title = kvp.Value.Title.Substring(0, 12);

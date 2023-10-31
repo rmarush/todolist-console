@@ -15,7 +15,7 @@ namespace todolist_console
         {
             var service = new NotesService();
             var notes = JsonService.LoadData<Dictionary<int, Notes>>("NoteData.json");
-            bool exit = false;
+            var exit = false;
             while (!exit)
             {
                 Console.Clear();
@@ -45,7 +45,6 @@ namespace todolist_console
                         Console.WriteLine("Your choice => Delete Note");
                         service.CheckNotes(notes);
                         notes.Remove(service.DeleteNote(notes));
-                        Console.WriteLine("Note was deleted!");
                         break;
                     case NoteMenu.FindNote:
                         Console.WriteLine("Your choice => Find Note");
