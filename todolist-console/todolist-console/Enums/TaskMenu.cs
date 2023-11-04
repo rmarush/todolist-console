@@ -9,8 +9,7 @@ namespace todolist_console.Enums
     public enum TaskMenu
     {
         CreateTask = 1,
-        EditTask,
-        DeleteTask,
+        CheckByOne,
         CheckTasks,
         EmailSend,
         End

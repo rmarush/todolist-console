@@ -7,12 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using todolist_console.Enums;
 using todolist_console.Models;
+using todolist_console.Utils;
 
 namespace todolist_console.Services
 {
     internal class ExcelService
     {
-        public static async Task CreateExcelTable(List<Tasks> tasks, string filePath)
+        public static async Task CreateExcelTable(DoublyLinkedList<Tasks> tasks, string filePath)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 

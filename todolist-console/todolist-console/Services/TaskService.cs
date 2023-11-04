@@ -29,21 +29,23 @@ namespace todolist_console.Services
                     Console.WriteLine("Invalid input. Please try again.");
                 }
             }
+
             Console.WriteLine("Task was created!");
             return newTask;
         }
+
         public void EditTask(Tasks task)
         {
             var exit = false;
-            while(!exit)
+            while (!exit)
             {
                 Console.WriteLine("Tasks status:" +
-                      "\n1 - To-Do" +
-                      "\n2 - In progress" +
-                      "\n3 - Done");
+                                  "\n1 - To-Do" +
+                                  "\n2 - In progress" +
+                                  "\n3 - Done");
                 Console.Write("Input a choice: ");
                 Enum.TryParse(Console.ReadLine(), out TasksStatus status);
-                switch(status)
+                switch (status)
                 {
                     case TasksStatus.ToDo:
                     case TasksStatus.InProgress:
@@ -56,16 +58,65 @@ namespace todolist_console.Services
                         break;
                 }
             }
+
             Console.WriteLine("Status was changed!");
         }
-        public Tasks FindTask(List<Tasks> tasks)
+
+        public void CheckTaskByOne(DoublyLinkedList<Tasks> tasks)
         {
-            Console.Write("Enter a task name for find => ");
-            var foundedTitle = Console.ReadLine();
-            var task = tasks.FirstOrDefault(t => t.Title == foundedTitle);    
-            return task ?? new Tasks();
+            var current = tasks.Head;
+            ConsoleKeyInfo key;
+            do
+            {
+                if (tasks.Count == 0) return;
+                Console.WriteLine("Status         || Title                          || Date");
+                Console.WriteLine("-----------------------------------------------------------------------");
+                Console.WriteLine(current.Value.Status.ToString().PadRight(15) + "||" + $"  {"".PadRight(30)}||");
+                Console.WriteLine("               || " + current.Value.Title.PadRight(30) + " || " + current.Value.Date.ToString("dd/MM/yyyy HH:mm:ss"));
+                Console.WriteLine("-----------------------------------------------------------------------");
+                CheckKey();
+                key = Console.ReadKey();
+                ProcessKeyPress(key, tasks, ref current);
+                Console.Clear();
+            } while (key.Key != ConsoleKey.Escape);
         }
-        public void CheckTasks(List<Tasks> tasks)
+
+        private void CheckKey()
+        {
+            Console.WriteLine("\t\t╔════════════════════════════════╗");
+            Console.WriteLine("\t\t║  ↑ (Up Arrow) - Edit           ║");
+            Console.WriteLine("\t\t║  <-- (Left Arrow) - Previous   ║");
+            Console.WriteLine("\t\t║  --> (Right Arrow) - Next      ║");
+            Console.WriteLine("\t\t║  ↓ (Down Arrow) - Delete       ║");
+            Console.WriteLine("\t\t║  Esc (Escape) - Exit           ║");
+            Console.WriteLine("\t\t╚════════════════════════════════╝");
+        }
+        private void ProcessKeyPress(ConsoleKeyInfo key, DoublyLinkedList<Tasks> tasks, ref DoublyLinkedList<Tasks>.Node current)
+        {
+            switch (key.Key)
+            {
+                case ConsoleKey.LeftArrow:
+                    current = current.Previous;
+                    return;
+                case ConsoleKey.RightArrow:
+                    current = current.Next;
+                    return;
+                case ConsoleKey.UpArrow:
+                    EditTask(current.Value);
+                    break;
+                case ConsoleKey.DownArrow:
+                    var deleteNode = current;
+                    current = current.Next;
+                    tasks.Remove(deleteNode.Value);
+                    break;
+                case ConsoleKey.Escape:
+                default:
+                    break;
+            }
+            
+        }
+
+        public void CheckTasks(DoublyLinkedList<Tasks> tasks)
         {
             IEnumerable<TasksStatus> uniqueStatuses = tasks.Select(task => task.Status).Distinct().OrderBy(status => status);
             if(uniqueStatuses == null ||  !uniqueStatuses.Any())
@@ -86,7 +137,7 @@ namespace todolist_console.Services
                 Console.WriteLine("-----------------------------------------------------------------------");
             }
         }
-        public async Task EmailSend(List<Tasks> tasks)
+        public async Task EmailSend(DoublyLinkedList<Tasks> tasks)
         {
             var filePath = "Excel-To-Do-List.xlsx";
             Console.WriteLine("Input your email: ");

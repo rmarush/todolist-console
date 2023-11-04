@@ -7,6 +7,7 @@ using todolist_console.Enums;
 using todolist_console.Services;
 using todolist_console.Menus.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using todolist_console.Utils;
 
 namespace todolist_console.Menus
 {
@@ -15,18 +16,18 @@ namespace todolist_console.Menus
         public void ShowMenu()
         {
             var service = new TaskService();
-            var tasks = JsonService.LoadData<List<Tasks>>("TaskData.json");
+            DoublyLinkedList<Tasks> tasks = JsonService.LoadData<DoublyLinkedList<Tasks>>("TaskData.json");
+            //var tasks = new DoublyLinkedList<Tasks>();
             var exit = false;
             while (!exit)
             {
                 Console.Clear();
                 Console.WriteLine("Tasks menu:" +
                         "\n1 - Create Task" +
-                        "\n2 - Edit Task" +
-                        "\n3 - Delete Task" +
-                        "\n4 - Check Tasks" +
-                        "\n5 - Send to Mail" +
-                        "\n6 - Return to the main menu");
+                        "\n2 - Check Task by one" +
+                        "\n3 - Check Tasks" +
+                        "\n4 - Send to Mail" +
+                        "\n5 - Return to the main menu");
                 Console.Write("Input a choice: ");
                 Enum.TryParse(Console.ReadLine(), out TaskMenu menu);
                 Console.Clear();
@@ -36,16 +37,8 @@ namespace todolist_console.Menus
                         Console.WriteLine("Your choice => Create Task");
                         tasks.Add(service.CreateTask());
                         break;
-                    case TaskMenu.EditTask:
-                        Console.WriteLine("Your choice => Edit Task");
-                        service.CheckTasks(tasks);
-                        service.EditTask(service.FindTask(tasks));
-                        break;
-                    case TaskMenu.DeleteTask:
-                        Console.WriteLine("Your choice => Delete Task");
-                        service.CheckTasks(tasks);
-                        tasks.Remove(service.FindTask(tasks));
-                        Console.WriteLine("Task was deleted!");
+                    case TaskMenu.CheckByOne:
+                        service.CheckTaskByOne(tasks);
                         break;
                     case TaskMenu.CheckTasks:
                         service.CheckTasks(tasks);
@@ -63,7 +56,7 @@ namespace todolist_console.Menus
                 Console.WriteLine("Press any key to continue.");
                 Console.ReadLine();
             }
-            JsonService.WriteData<List<Tasks>>(tasks, "TaskData.json");
+            JsonService.WriteData<DoublyLinkedList<Tasks>>(tasks, "TaskData.json");
 
         }
     }
