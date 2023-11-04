@@ -11,8 +11,10 @@ using todolist_console.Utils;
 
 namespace todolist_console.Services
 {
-    internal class ExcelService
+    public class ExcelService
     {
+        const string columnStatus = "A";
+        const string columnName = "B";
         public static async Task CreateExcelTable(DoublyLinkedList<Tasks> tasks, string filePath)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -20,8 +22,6 @@ namespace todolist_console.Services
             using var package = new ExcelPackage(new FileInfo(filePath));
             var worksheet = package.Workbook.Worksheets.Add("To-Do-List");
             var rowNumber = 1;
-            var columnStatus = "A";
-            var columnName = "B";
             IEnumerable<TasksStatus> uniqueStatuses = tasks.Select(task => task.Status).Distinct().OrderBy(status => status);
             if (uniqueStatuses == null || !uniqueStatuses.Any())
             {
@@ -31,28 +31,41 @@ namespace todolist_console.Services
             {
                 foreach (var status in uniqueStatuses)
                 {
-                    worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()].Merge = true;
-                    SetStyles(worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()]);
-                    var statusCell = worksheet.Cells[columnStatus + rowNumber.ToString()];
-                    statusCell.Value = status;
-                    statusCell.Style.Font.Bold = true;
-                    statusCell.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    statusCell.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Aqua);
-                    rowNumber++;
+                    CreateStatusRow(worksheet, ref rowNumber, status);
+                    var count = 0;
                     var tasksWithStatus = tasks.Where(task => task.Status == status);
                     foreach (var task in tasksWithStatus)
                     {
-                        worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()].Merge = true;
-                        SetStyles(worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()]);
-                        var taskName = worksheet.Cells[columnStatus + (rowNumber++).ToString()];
-                        taskName.Value = task.Title;
+                        CreateTaskRow(worksheet, ref rowNumber, task.Title);
+                        count++;
                     }
+                    CreateTaskRow(worksheet, ref rowNumber, $"Count: {count.ToString()}");
                 }
             }
             await package.SaveAsync();
         }
 
-        public static void SetStyles(ExcelRange? cell)
+        private static void CreateStatusRow(ExcelWorksheet worksheet, ref int rowNumber, TasksStatus status)
+        {
+            worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()].Merge = true;
+            SetStyles(worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()]);
+            var statusCell = worksheet.Cells[columnStatus + rowNumber.ToString()];
+            statusCell.Value = status;
+            statusCell.Style.Font.Bold = true;
+            statusCell.Style.Fill.PatternType = ExcelFillStyle.Solid;
+            statusCell.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Aqua);
+            rowNumber++;
+        }
+
+        private static void CreateTaskRow(ExcelWorksheet worksheet, ref int rowNumber, string taskTitle)
+        {
+            worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()].Merge = true;
+            SetStyles(worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()]);
+            var taskName = worksheet.Cells[columnStatus + (rowNumber++).ToString()];
+            taskName.Value = taskTitle;
+        }
+
+        private static void SetStyles(ExcelRange? cell)
         {
             cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             cell.Style.Font.Size = 14;
