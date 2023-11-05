@@ -13,8 +13,8 @@ namespace todolist_console.Services
 {
     public class ExcelService
     {
-        const string columnStatus = "A";
-        const string columnName = "B";
+        const string ColumnStatus = "A";
+        const string ColumnName = "B";
         public static async Task CreateExcelTable(DoublyLinkedList<Tasks> tasks, string filePath)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -25,7 +25,7 @@ namespace todolist_console.Services
             IEnumerable<TasksStatus> uniqueStatuses = tasks.Select(task => task.Status).Distinct().OrderBy(status => status);
             if (uniqueStatuses == null || !uniqueStatuses.Any())
             {
-                worksheet.Cells[columnStatus + rowNumber.ToString()].Value = "You have no task!";
+                worksheet.Cells[ColumnStatus + rowNumber.ToString()].Value = "You have no task!";
             }
             else
             {
@@ -47,9 +47,9 @@ namespace todolist_console.Services
 
         private static void CreateStatusRow(ExcelWorksheet worksheet, ref int rowNumber, TasksStatus status)
         {
-            worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()].Merge = true;
-            SetStyles(worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()]);
-            var statusCell = worksheet.Cells[columnStatus + rowNumber.ToString()];
+            worksheet.Cells[ColumnStatus + rowNumber.ToString() + ":" + ColumnName + rowNumber.ToString()].Merge = true;
+            SetStyles(worksheet.Cells[ColumnStatus + rowNumber.ToString() + ":" + ColumnName + rowNumber.ToString()]);
+            var statusCell = worksheet.Cells[ColumnStatus + rowNumber.ToString()];
             statusCell.Value = status;
             statusCell.Style.Font.Bold = true;
             statusCell.Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -59,9 +59,9 @@ namespace todolist_console.Services
 
         private static void CreateTaskRow(ExcelWorksheet worksheet, ref int rowNumber, string taskTitle)
         {
-            worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()].Merge = true;
-            SetStyles(worksheet.Cells[columnStatus + rowNumber.ToString() + ":" + columnName + rowNumber.ToString()]);
-            var taskName = worksheet.Cells[columnStatus + (rowNumber++).ToString()];
+            worksheet.Cells[ColumnStatus + rowNumber.ToString() + ":" + ColumnName + rowNumber.ToString()].Merge = true;
+            SetStyles(worksheet.Cells[ColumnStatus + rowNumber.ToString() + ":" + ColumnName + rowNumber.ToString()]);
+            var taskName = worksheet.Cells[ColumnStatus + (rowNumber++).ToString()];
             taskName.Value = taskTitle;
         }
 

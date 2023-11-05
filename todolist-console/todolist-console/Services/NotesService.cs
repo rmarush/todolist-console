@@ -11,6 +11,9 @@ using todolist_console.Utils;
 using System.Data.SqlTypes;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System.Collections;
+using log4net;
+using log4net.Config;
+using todolist_console.Services.Interfaces;
 
 namespace todolist_console.Services
 {
@@ -20,6 +23,8 @@ namespace todolist_console.Services
         private readonly int _maxDescrLenght = 35;
         private readonly InputSimulator _inputSimulator = new InputSimulator();
         private readonly Clipboard _clipboard = new Clipboard();
+        private readonly ILog log = LogManager.GetLogger(typeof(NotesService));
+
         public Notes CreateNote()
         {
             Notes newNote = null;
@@ -59,6 +64,10 @@ namespace todolist_console.Services
         }
         public int DeleteNote(Dictionary<int, Notes> notes)
         {
+            if (notes == null || !notes.Any())
+            {
+                return new Notes().Date.GetHashCode();
+            }
             var foundedNote = FindNote(notes);
             return ReviewNote(foundedNote) ? foundedNote.Date.GetHashCode() : new Notes().Date.GetHashCode();
         }
@@ -74,7 +83,24 @@ namespace todolist_console.Services
             CheckNote(note);
             Console.Write("You want to work with this Note [Yes/No]?" +
                           "\nEnter [0/1]: ");
-            return Int32.Parse(Console.ReadLine()) == 0 ? true : false;
+            try
+            {
+                int number = Int32.Parse(Console.ReadLine());
+                bool result = (number == 0);
+                return result;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine($"FormatException: {ex.Message}");
+                log.Error(ex.Message);
+                return false;
+            }
+            catch (OverflowException ex)
+            {
+                Console.WriteLine($"OverflowExcpetion: {ex.Message}");
+                log.Error(ex.Message);
+                return false; 
+            }
         }
         public Notes FindNote(Dictionary<int, Notes> notes)
         {

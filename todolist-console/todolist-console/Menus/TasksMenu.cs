@@ -16,8 +16,7 @@ namespace todolist_console.Menus
         public void ShowMenu()
         {
             var service = new TaskService();
-            DoublyLinkedList<Tasks> tasks = JsonService.LoadData<DoublyLinkedList<Tasks>>("TaskData.json");
-            //var tasks = new DoublyLinkedList<Tasks>();
+            var tasks = JsonService.LoadData<DoublyLinkedList<Tasks>>("TaskData.json");
             var exit = false;
             while (!exit)
             {
@@ -54,7 +53,7 @@ namespace todolist_console.Menus
                         break;
                 }
                 Console.WriteLine("Press any key to continue.");
-                Console.ReadLine();
+                Console.ReadKey();
             }
             JsonService.WriteData<DoublyLinkedList<Tasks>>(tasks, "TaskData.json");
 

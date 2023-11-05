@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace todolist_console.Services
 {
-    internal class TaskService
+    public class TaskService
     {
         public Tasks CreateTask()
         {
