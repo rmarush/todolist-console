@@ -7,18 +7,26 @@ using todolist_console.Models;
 using todolist_console.Enums;
 using todolist_console.Utils;
 using System.Threading.Tasks;
+using todolist_console.Utils.Interfaces;
 
 namespace todolist_console.Services
 {
     public class TaskService
     {
+        private readonly IConsoleInput _consoleInput;
+
+        public TaskService() { }
+        public TaskService(IConsoleInput consoleInput)
+        {
+            _consoleInput = consoleInput;
+        }
         public Tasks CreateTask()
         {
             Tasks newTask = null;
             while (newTask == null)
             {
                 Console.Write("Enter a task name => ");
-                var title = Console.ReadLine();
+                var title = _consoleInput.ReadLine();
 
                 if (!string.IsNullOrEmpty(title) && Regex.IsMatch(title, RegexConstants.TitlePattern))
                 {
@@ -44,7 +52,7 @@ namespace todolist_console.Services
                                   "\n2 - In progress" +
                                   "\n3 - Done");
                 Console.Write("Input a choice: ");
-                Enum.TryParse(Console.ReadLine(), out TasksStatus status);
+                Enum.TryParse(_consoleInput.ReadLine(), out TasksStatus status);
                 switch (status)
                 {
                     case TasksStatus.ToDo:

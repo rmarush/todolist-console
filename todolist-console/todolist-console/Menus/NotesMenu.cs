@@ -6,6 +6,8 @@ using todolist_console.Enums;
 using todolist_console.Menus.Interfaces;
 using todolist_console.Models;
 using todolist_console.Services;
+using todolist_console.Utils.Interfaces;
+using todolist_console.Utils;
 
 namespace todolist_console
 {
@@ -13,7 +15,8 @@ namespace todolist_console
     {
         public void ShowMenu()
         {
-            var service = new NotesService();
+            IConsoleInput consoleInput = new ConsoleInput();
+            var service = new NotesService(consoleInput);
             var notes = JsonService.LoadData<Dictionary<int, Notes>>("NoteData.json");
             var exit = false;
             while (!exit)

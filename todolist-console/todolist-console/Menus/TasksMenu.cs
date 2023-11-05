@@ -8,6 +8,7 @@ using todolist_console.Services;
 using todolist_console.Menus.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using todolist_console.Utils;
+using todolist_console.Utils.Interfaces;
 
 namespace todolist_console.Menus
 {
@@ -15,7 +16,8 @@ namespace todolist_console.Menus
     {
         public void ShowMenu()
         {
-            var service = new TaskService();
+            IConsoleInput consoleInput = new ConsoleInput();
+            var service = new TaskService(consoleInput);
             var tasks = JsonService.LoadData<DoublyLinkedList<Tasks>>("TaskData.json");
             var exit = false;
             while (!exit)

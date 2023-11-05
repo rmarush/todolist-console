@@ -13,7 +13,7 @@ using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System.Collections;
 using log4net;
 using log4net.Config;
-using todolist_console.Services.Interfaces;
+using todolist_console.Utils.Interfaces;
 
 namespace todolist_console.Services
 {
@@ -24,6 +24,13 @@ namespace todolist_console.Services
         private readonly InputSimulator _inputSimulator = new InputSimulator();
         private readonly Clipboard _clipboard = new Clipboard();
         private readonly ILog log = LogManager.GetLogger(typeof(NotesService));
+        private readonly IConsoleInput _consoleInput;
+        
+        public NotesService() {}
+        public NotesService(IConsoleInput consoleInput)
+        {
+            _consoleInput = consoleInput;
+        }
 
         public Notes CreateNote()
         {
@@ -31,9 +38,9 @@ namespace todolist_console.Services
             while(newNote == null)
             {
                 Console.Write("Enter a note name => ");
-                var title = Console.ReadLine();
+                var title = _consoleInput.ReadLine();
                 Console.Write("Enter a description => ");
-                var description = Console.ReadLine();
+                var description = _consoleInput.ReadLine();
                 if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(description) && Regex.IsMatch(title, RegexConstants.TitlePattern))
                 {
                     newNote = new Notes(title, description);
@@ -55,10 +62,10 @@ namespace todolist_console.Services
             }
             Console.Write("What will we edit Title or Decription?" +
                     "\nEnter [0/1]: ");
-            var choice = Int32.Parse(Console.ReadLine());
+            var choice = Int32.Parse(_consoleInput.ReadLine());
             _clipboard.SetText(choice == 0 ? foundedNote.Title : foundedNote.Description);
             _inputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
-            var newText = Console.ReadLine();
+            var newText = _consoleInput.ReadLine();
             _ = choice == 1 ? (foundedNote.Description = newText) : (foundedNote.Title = newText);
             Console.WriteLine("Note was edited!");
         }
@@ -72,7 +79,7 @@ namespace todolist_console.Services
             return ReviewNote(foundedNote) ? foundedNote.Date.GetHashCode() : new Notes().Date.GetHashCode();
         }
 
-        public bool ReviewNote(Notes note)
+        public virtual bool ReviewNote(Notes note)
         {
             if (note == null)
             {
@@ -85,7 +92,7 @@ namespace todolist_console.Services
                           "\nEnter [0/1]: ");
             try
             {
-                int number = Int32.Parse(Console.ReadLine());
+                int number = Int32.Parse(_consoleInput.ReadLine());
                 bool result = (number == 0);
                 return result;
             }
@@ -102,10 +109,10 @@ namespace todolist_console.Services
                 return false; 
             }
         }
-        public Notes FindNote(Dictionary<int, Notes> notes)
+        public virtual Notes FindNote(Dictionary<int, Notes> notes)
         {
             Console.WriteLine("Input a pattern: ");
-            var query = Console.ReadLine();
+            var query = _consoleInput.ReadLine();
             if (notes == null || !notes.Any() || string.IsNullOrEmpty(query))
             {
                 Console.WriteLine("Dictionary or patter is empty");
