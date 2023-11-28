@@ -18,9 +18,21 @@ namespace todolist_console.Services
     {
         public static async Task SendMessage(string reciver, string filePath)
         {
-            var kvp = JsonService.LoadData<MailKey>("KeyData.json");
+            var mailKey = JsonService.LoadData<MailKey>("KeyData.json");
+            string password = null;
+            if ( VerifyUserPassword(mailKey, out password))
+            {
+                Console.WriteLine("Your password is correct!");
+            }
+            else
+            {
+                Console.WriteLine("Password is incorrect, try again later!");
+                File.Delete(filePath);
+                return;
+            }
+
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("To-Do-List", kvp.Key));
+            message.From.Add(new MailboxAddress("To-Do-List", mailKey.Email));
             message.To.Add(new MailboxAddress("User", reciver));
             message.Subject = "To-Do-List";
 
@@ -90,12 +102,19 @@ namespace todolist_console.Services
             using (var client = new MailKit.Net.Smtp.SmtpClient())
             {
                 await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                await client.AuthenticateAsync(kvp.Key, kvp.Value);
+                await client.AuthenticateAsync(mailKey.Email, password);
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }
             await attachment.Content.Stream.DisposeAsync();
             File.Delete(filePath);
+        }
+
+        private static bool VerifyUserPassword(MailKey mailKey, out string password)
+        {
+            Console.Write("Input a password for email: ");
+            password = Console.ReadLine();
+            return mailKey.VerifyPassword(password) ? true : false;
         }
     }
 }

@@ -148,7 +148,7 @@ namespace todolist_console.Services
         public async Task EmailSend(DoublyLinkedList<Tasks> tasks)
         {
             var filePath = "Excel-To-Do-List.xlsx";
-            Console.WriteLine("Input your email: ");
+            Console.WriteLine("Input reciver email: ");
             var email = Console.ReadLine();
             if (!string.IsNullOrEmpty(email) && Regex.IsMatch(email, RegexConstants.EmailPattern))
             {

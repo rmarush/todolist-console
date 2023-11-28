@@ -29,13 +29,16 @@ namespace todolist_console
                     case Menu.OpenTasksMenu:
                         newMenu = new TasksMenu();
                         break;
+
                     case Menu.OpenNotesMenu:
                         newMenu = new NotesMenu();
                         break;
+
                     case Menu.End:
                         newMenu = null;
                         exit = true;
                         break;
+
                     default:
                         newMenu = null;
                         Console.WriteLine("Invalid choice. Please try again.\n" +

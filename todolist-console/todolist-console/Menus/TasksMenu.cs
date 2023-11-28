@@ -28,7 +28,8 @@ namespace todolist_console.Menus
                         "\n2 - Check Task by one" +
                         "\n3 - Check Tasks" +
                         "\n4 - Send to Mail" +
-                        "\n5 - Return to the main menu");
+                        "\n5 - Sort collection" +
+                        "\n6 - Return to the main menu");
                 Console.Write("Input a choice: ");
                 Enum.TryParse(Console.ReadLine(), out TaskMenu menu);
                 Console.Clear();
@@ -46,6 +47,9 @@ namespace todolist_console.Menus
                         break;
                     case TaskMenu.EmailSend:
                         service.EmailSend(tasks);
+                        break;
+                    case TaskMenu.SortCollection:
+                        SortService.SortCollectionByField(tasks);
                         break;
                     case TaskMenu.End:
                         exit = true;

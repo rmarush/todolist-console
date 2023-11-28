@@ -8,6 +8,7 @@ using log4net.Config;
 using log4net.Core;
 using todolist_console.Models;
 using todolist_console.Utils;
+using todolist_console.Utils.Interfaces;
 
 namespace todolist_console.Services
 {

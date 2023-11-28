@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace todolist_console.Enums
 {
-    public enum TaskMenu
+    public enum SortMenu
     {
-        CreateTask = 1,
-        CheckByOne,
-        CheckTasks,
-        EmailSend,
-        SortCollection,
+        SortByTitle = 1,
+        SortByDate,
         End
     }
 }
