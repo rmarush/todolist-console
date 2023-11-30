@@ -13,6 +13,8 @@ namespace todolist_console
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Console.InputEncoding = System.Text.Encoding.Unicode;
             IMenu newMenu = null;
             var exit = false;
             while (!exit)

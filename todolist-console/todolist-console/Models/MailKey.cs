@@ -21,7 +21,7 @@ namespace todolist_console.Models
         }
         private string GenerateSalt()
         {
-            byte[] saltBytes = new byte[16];
+            var saltBytes = new byte[16];
             using (var rng = new RNGCryptoServiceProvider())
             {
                 rng.GetBytes(saltBytes);
@@ -31,18 +31,16 @@ namespace todolist_console.Models
 
         private string HashPassword(string password, string salt)
         {
-            using (var sha256 = new SHA256Managed())
-            {
-                byte[] saltBytes = Convert.FromBase64String(salt);
-                byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+            using var sha256 = new SHA256Managed();
+            var saltBytes = Convert.FromBase64String(salt);
+            var passwordBytes = Encoding.UTF8.GetBytes(password);
 
-                byte[] combinedBytes = new byte[saltBytes.Length + passwordBytes.Length];
-                Buffer.BlockCopy(saltBytes, 0, combinedBytes, 0, saltBytes.Length);
-                Buffer.BlockCopy(passwordBytes, 0, combinedBytes, saltBytes.Length, passwordBytes.Length);
+            var combinedBytes = new byte[saltBytes.Length + passwordBytes.Length];
+            Buffer.BlockCopy(saltBytes, 0, combinedBytes, 0, saltBytes.Length);
+            Buffer.BlockCopy(passwordBytes, 0, combinedBytes, saltBytes.Length, passwordBytes.Length);
 
-                byte[] hashedBytes = sha256.ComputeHash(combinedBytes);
-                return Convert.ToBase64String(hashedBytes);
-            }
+            var hashedBytes = sha256.ComputeHash(combinedBytes);
+            return Convert.ToBase64String(hashedBytes);
         }
         public bool VerifyPassword(string password)
         {

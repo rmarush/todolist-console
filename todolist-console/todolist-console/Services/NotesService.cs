@@ -36,7 +36,7 @@ namespace todolist_console.Services
         {
             Notes newNote = null;
             while(newNote == null)
-            {
+            { 
                 Console.Write("Enter a note name => ");
                 var title = _consoleInput.ReadLine();
                 Console.Write("Enter a description => ");
