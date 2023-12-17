@@ -13,6 +13,7 @@
     <PackageReference Include="InputSimulatorPlus" Version="1.0.7" />
     <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="MailKit" Version="4.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="TextCopy" Version="6.2.1" />
   </ItemGroup>
 

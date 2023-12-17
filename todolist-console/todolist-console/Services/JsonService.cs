@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using log4net;
-using log4net.Config;
-using log4net.Core;
-using todolist_console.Models;
-using todolist_console.Utils;
-using todolist_console.Utils.Interfaces;
 
 namespace todolist_console.Services
 {

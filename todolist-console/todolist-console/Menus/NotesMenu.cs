@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using todolist_console.Enums;
+﻿using todolist_console.Enums;
 using todolist_console.Menus.Interfaces;
 using todolist_console.Models;
 using todolist_console.Services;
 using todolist_console.Utils.Interfaces;
 using todolist_console.Utils;
-using System.Threading.Tasks;
 
 namespace todolist_console
 {

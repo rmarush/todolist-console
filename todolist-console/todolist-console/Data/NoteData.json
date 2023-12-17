@@ -1,1 +1,37 @@
-{"1275662972":{"Title":"CSharp","Description":"C# (pronounced See sharp)[b] is a general-purpose high-level programming language supporting multiple paradigms. C# encompasses static typing,[16]: 4  strong typing, lexically scoped, imperative, declarative, functional, generic,[16]: 22  object-oriented (class-based), and component-oriented programming disciplines.[17]","Date":"2023-11-06T08:56:30.366025+02:00"},"1025599722":{"Title":"Java","Description":"Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language intended to let programmers write once, run anywhere (WORA),[16] meaning that compiled Java code can run on all platforms that support Java without the need to recompile.[17] Java applications are typically compiled to bytecode that can run on any Java virtual machine (JVM) regardless of the underlying computer architecture. The syntax of Java is similar to C and C\u002B\u002B, but has fewer low-level facilities than either of them. The Java runtime provides dynamic capabilities (such as reflection and runtime code modification) that are typically not available in traditional compiled languages.","Date":"2023-11-06T08:56:05.4617676+02:00"},"1358876023":{"Title":"JavaScript","Description":"JavaScript often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. As of 2023, 98.7% of websites use JavaScript on the client side for webpage behavior,[10] often incorporating third-party libraries. All major web browsers have a dedicated JavaScript engine to execute the code on users\u0027 devices.","Date":"2023-11-06T08:57:02.7819473+02:00"}}
+{
+  "1275662972": {
+    "Title": "CSharp",
+    "Description": "C# (pronounced See sharp)[b] is a general-purpose high-level programming language supporting multiple paradigms. C# encompasses static typing,[16]: 4  strong typing, lexically scoped, imperative, declarative, functional, generic,[16]: 22  object-oriented (class-based), and component-oriented programming disciplines.[17]",
+    "Date": "2023-11-06T08:56:30.366025+02:00"
+  },
+  "1025599722": {
+    "Title": "Java",
+    "Description": "Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language intended to let programmers write once, run anywhere (WORA),[16] meaning that compiled Java code can run on all platforms that support Java without the need to recompile.[17] Java applications are typically compiled to bytecode that can run on any Java virtual machine (JVM) regardless of the underlying computer architecture. The syntax of Java is similar to C and C\u002B\u002B, but has fewer low-level facilities than either of them. The Java runtime provides dynamic capabilities (such as reflection and runtime code modification) that are typically not available in traditional compiled languages.",
+    "Date": "2023-11-06T08:56:05.4617676+02:00"
+  },
+  "1358876023": {
+    "Title": "JavaScript",
+    "Description": "JavaScript often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. As of 2023, 98.7% of websites use JavaScript on the client side for webpage behavior,[10] often incorporating third-party libraries. All major web browsers have a dedicated JavaScript engine to execute the code on users\u0027 devices.",
+    "Date": "2023-11-06T08:57:02.7819473+02:00"
+  },
+  "-1737599052": {
+    "Title": "Ruby",
+    "Description": "Ruby is an interpreted, high-level, general-purpose programming language which supports multiple programming paradigms. It was designed with an emphasis on programming productivity and simplicity.",
+    "Date": "2023-12-17T15:19:30.0342951+02:00"
+  },
+  "-1196095710": {
+    "Title": "Fortran",
+    "Description": "Fortran  is a general-purpose, compiled imperative programming language that is especially suited to numeric computation and scientific computing.",
+    "Date": "2023-12-17T15:20:23.2581169+02:00"
+  },
+  "-613331948": {
+    "Title": "Angular",
+    "Description": "Angular (also referred to as \u0022Angular 2\u002B\u0022)[4] is a TypeScript-based, free and open-source single-page web application framework led by the Angular Team at Google and by a community of individuals and corporations. Angular is a complete rewrite from the same team that built AngularJS.",
+    "Date": "2023-12-17T15:21:22.3698183+02:00"
+  },
+  "-109978632": {
+    "Title": "Microsoft Azure",
+    "Description": "Microsoft Azure, often referred to as Azure is a cloud computing platform run by Microsoft. It offers access, management, and the development of applications and services through global data centers. It also provides a range of capabilities, including software as a service (SaaS), platform as a service (PaaS), and infrastructure as a service (IaaS). Microsoft Azure supports many programming languages, tools, and frameworks, including Microsoft-specific and third-party software and systems.",
+    "Date": "2023-12-17T15:22:12.6978283+02:00"
+  }
+}

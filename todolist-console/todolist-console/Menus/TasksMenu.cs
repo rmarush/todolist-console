@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using todolist_console.Models;
+﻿using todolist_console.Models;
 using todolist_console.Enums;
 using todolist_console.Services;
 using todolist_console.Menus.Interfaces;
-using System.ComponentModel.DataAnnotations;
 using todolist_console.Utils;
 using todolist_console.Utils.Interfaces;
 

@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using TextCopy;
 using WindowsInput;
 using WindowsInput.Native;
 using todolist_console.Models;
 using todolist_console.Utils;
-using System.Data.SqlTypes;
-using Microsoft.Extensions.FileSystemGlobbing.Internal;
-using System.Collections;
 using log4net;
-using log4net.Config;
 using todolist_console.Utils.Interfaces;
 
 namespace todolist_console.Services

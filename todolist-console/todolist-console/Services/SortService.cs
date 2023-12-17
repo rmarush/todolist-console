@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using todolist_console.Enums;
-using todolist_console.Models;
 using todolist_console.Utils;
 
 namespace todolist_console.Services
@@ -21,6 +16,8 @@ namespace todolist_console.Services
                               "\n3 - End");
             Console.Write("Input a choice: ");
             Enum.TryParse(Console.ReadLine(), out SortMenu fieldIndex);
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             switch (fieldIndex)
             {
                 case SortMenu.SortByTitle:
@@ -38,14 +35,14 @@ namespace todolist_console.Services
                 default:
                     throw new ArgumentException("Invalid field index for sorting");
             }
-
+            stopwatch.Stop();
             collection.Clear();
             foreach (var item in sortedList)
             {
                 collection.Add(item);
             }
 
-            Console.WriteLine("Collection was sorted!");
+            Console.WriteLine($"Collection was sorted in {stopwatch.Elapsed} milliseconds!");
         }
 
     }

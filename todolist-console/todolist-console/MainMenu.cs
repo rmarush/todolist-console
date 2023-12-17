@@ -1,10 +1,6 @@
 ﻿using todolist_console.Enums;
 using todolist_console.Menus;
 using todolist_console.Menus.Interfaces;
-using todolist_console.Models;
-using todolist_console.Services;
-using todolist_console.Utils;
-using todolist_console.Utils.Interfaces;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 namespace todolist_console
@@ -14,7 +10,7 @@ namespace todolist_console
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.Unicode;
-            Console.InputEncoding = System.Text.Encoding.Unicode;
+            Console.InputEncoding = System.Text.Encoding.Unicode;   
             IMenu newMenu = null;
             var exit = false;
             while (!exit)

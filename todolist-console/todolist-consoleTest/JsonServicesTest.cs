@@ -1,7 +1,4 @@
-﻿using System.Text.Json;
-
-
-namespace todolist_consoleTest
+﻿namespace todolist_consoleTest
 {
     [TestClass]
     public class JsonServicesTest

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace todolist_console.Models
 {
@@ -44,7 +40,7 @@ namespace todolist_console.Models
         }
         public bool VerifyPassword(string password)
         {
-            string hashedInput = HashPassword(password, Salt);
+            var hashedInput = HashPassword(password, Salt);
             return HashedPassword.Equals(hashedInput);
         }
     }

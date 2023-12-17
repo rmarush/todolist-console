@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using todolist_console.Enums;
+﻿using todolist_console.Enums;
 
 namespace todolist_console.Models
 {

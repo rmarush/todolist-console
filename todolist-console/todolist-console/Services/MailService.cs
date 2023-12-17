@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Mime;
-using System.Text;
-using System.Threading.Tasks;
-using MailKit.Security;
+﻿using MailKit.Security;
 using MimeKit;
-using MailKit.Net.Smtp;
-using System.IO;
-using System.Text.Json;
 using todolist_console.Models;
 
 namespace todolist_console.Services
@@ -108,6 +98,7 @@ namespace todolist_console.Services
             }
             await attachment.Content.Stream.DisposeAsync();
             File.Delete(filePath);
+            Console.WriteLine("Message is delivered! Check your email.");
         }
 
         private static bool VerifyUserPassword(MailKey mailKey, out string password)
